@@ -39,6 +39,7 @@ watch(
       <Component
         :is="slide"
         :key="idx"
+        :data-idx="idx"
       />
     </ThePageSlide>
   </ThePage>

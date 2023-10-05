@@ -54,6 +54,11 @@ module.exports = {
     ],
     'vue/define-props-declaration': ['error', 'type-based'],
     'vue/padding-line-between-blocks': ['error', 'always'],
-    'vue/multi-word-component-names': ['warn'],
+    'vue/multi-word-component-names': [
+      'warn',
+      {
+        ignores: ['Email', 'Phone', 'Telegram', 'Github'],
+      },
+    ],
   },
 };

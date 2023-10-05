@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ConcreteComponent } from 'vue';
+import type { ISocialData } from '~/components/componentsTypes';
 import { resolveComponent } from '#imports';
 
 type ResolveComponent = string | ConcreteComponent;
@@ -9,7 +10,33 @@ const phone: ResolveComponent = resolveComponent('IconsSocialPhone');
 const telegram: ResolveComponent = resolveComponent('IconsSocialTelegram');
 const github: ResolveComponent = resolveComponent('IconsSocialGithub');
 
-const socialsArr: ResolveComponent[] = [email, phone, telegram, github];
+const initialEmail = 'andrey23volovik@gmail.com';
+const initialPhone = '+380983503816';
+
+const socialsArr: ISocialData[] = [
+  {
+    component: email as ConcreteComponent,
+    tooltipText: 'Copy email: ' + initialEmail,
+    target: '_self',
+  },
+  {
+    component: phone as ConcreteComponent,
+    tooltipText: 'Copy phone: ' + initialPhone,
+    target: '_self',
+  },
+  {
+    component: telegram as ConcreteComponent,
+    href: 'https://t.me/AndreW_23_A',
+    tooltipText: 'Send message to telegram',
+    target: '_blank',
+  },
+  {
+    component: github as ConcreteComponent,
+    href: 'https://github.com/Andrew23Volovik',
+    tooltipText: 'Go to github',
+    target: '_blank',
+  },
+];
 </script>
 
 <template>
@@ -19,13 +46,19 @@ const socialsArr: ResolveComponent[] = [email, phone, telegram, github];
       :key="idx"
       v-motion-pop-visible-once
     >
-      <a class="social-wrapper__link">
-        <Component
-          :is="social"
-          class="icon"
-        />
-        <span class="inner"></span>
-      </a>
+      <UITheTooltip :text="social.tooltipText">
+        <a
+          class="social-wrapper__link"
+          :href="social.href"
+          :target="social.target"
+        >
+          <Component
+            :is="social.component"
+            class="icon"
+          />
+          <span class="inner"></span>
+        </a>
+      </UITheTooltip>
     </li>
   </ul>
 </template>
