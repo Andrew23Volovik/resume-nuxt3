@@ -70,6 +70,7 @@ onUnmounted(() => {
 
 <template>
   <main class="page">
+    <ThePageSocial />
     <slot />
   </main>
 </template>

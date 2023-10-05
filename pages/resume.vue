@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { AsyncComponentLoader, Raw, Ref } from 'vue';
+import type { AsyncComponentLoader, ComputedRef, Raw, Ref } from 'vue';
+import type { LocationQueryValue } from 'vue-router';
 import { defineAsyncComponent, ref, markRaw, watch, useRoute } from '#imports';
 
 const dataSlides: string[] = ['ThePromo', 'TheProfile', 'TheSkills', 'TheExperience', 'TheThanks'];
@@ -12,7 +13,7 @@ const slides: Ref<string[] | NonNullable<unknown>[]> = ref([]);
 slides.value = dataSlides.map(() => 'div');
 
 const route = useRoute();
-const currPage = computed(() => route.query.page);
+const currPage: ComputedRef<LocationQueryValue | LocationQueryValue[]> = computed(() => route.query.page);
 
 const addSLide = (slideIndex: number): void => {
   if (typeof slides.value[Number(slideIndex)] === 'string') {
