@@ -1,7 +1,16 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>THEPROMO</div>
+  <div class="promo">
+    <UITheBackgroundMatrix />
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.promo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+</style>
