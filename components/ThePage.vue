@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import type { Ref } from 'vue';
-import { ref, onMounted, nextTick, onUnmounted, useRouter, useRoute } from '#imports';
+import { ref, onMounted, nextTick, onUnmounted, useRouter, useRoute, useBreakpoints } from '#imports';
 
 const arrayOfSlides: Ref<NodeListOf<HTMLElement> | []> = ref([]);
 
 const currSection: Ref<number> = ref(0);
 const sectionInMove: Ref<boolean> = ref(false);
 
+const { screenType } = useBreakpoints();
+
 const wheelMove = (e: WheelEvent): boolean => {
+  if (screenType.value === 'lg' || screenType.value === 'md' || screenType.value === 'sm') return false;
+
   if (e instanceof WheelEvent) {
     if (e.deltaY < 0 && !sectionInMove.value) {
       moveUp();
@@ -55,6 +59,11 @@ const moveToSection = (id: number): void => {
   }, 200);
 };
 
+const changeCurrSection = (idx: number): void => {
+  currSection.value = idx;
+  moveToSection(idx);
+};
+
 const route = useRoute();
 onMounted(async () => {
   await nextTick();
@@ -70,7 +79,12 @@ onUnmounted(() => {
 
 <template>
   <main class="page">
-    <ThePageSocial />
+    <ThePageMenu
+      v-if="screenType === '2xl' || screenType === 'xl'"
+      :active-section-id="currSection"
+      @click-section="changeCurrSection"
+    />
+    <ThePageSocial v-if="screenType === '2xl' || screenType === 'xl'" />
     <slot />
   </main>
 </template>
