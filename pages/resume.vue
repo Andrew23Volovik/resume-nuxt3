@@ -2,7 +2,7 @@
 import type { Ref } from 'vue';
 import { ref } from '#imports';
 
-const dataSlides: string[] = ['div', 'div', 'div', 'div', 'div'];
+const dataSlides: string[] = ['ThePromo', 'TheProfile', 'TheSkills', 'TheExperience', 'TheThanks'];
 
 const slides: Ref<string[]> = ref([]);
 slides.value = dataSlides.map(() => 'div');
