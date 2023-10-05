@@ -9,3 +9,17 @@ export interface ISocialData {
   tooltipText: string;
   target: "_self" | "_blank" | "_parent" | "_top";
 }
+
+export interface IMotionAnimation {
+  animation?: boolean;
+}
+
+export interface ICardStyle extends IMotionAnimation {
+  width?: string;
+  padding?: string;
+  border?: string;
+  borderHover?: string;
+  background?: string;
+  hoverBackground?: string;
+  hoverBoxShadow?: string;
+}

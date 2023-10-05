@@ -37,6 +37,27 @@ const socialsArr: ISocialData[] = [
     target: '_blank',
   },
 ];
+
+type scopeValidationTuple = [typeof initialEmail, typeof initialPhone];
+const scopeValidation: scopeValidationTuple = [initialEmail, initialPhone];
+const copy = async (text: string): Promise<void | boolean> => {
+  try {
+    let copyText: string = '';
+    scopeValidation.forEach((el) => {
+      if (text.includes(el)) {
+        copyText = el;
+      }
+    });
+
+    if (!copyText) return false;
+
+    await navigator.clipboard.writeText(copyText);
+  } catch (e) {
+    if (e instanceof Error) {
+      showError({ message: e.message });
+    }
+  }
+};
 </script>
 
 <template>
@@ -45,6 +66,7 @@ const socialsArr: ISocialData[] = [
       v-for="(social, idx) in socialsArr"
       :key="idx"
       v-motion-pop-visible-once
+      @click="copy(social.tooltipText)"
     >
       <UITheTooltip :text="social.tooltipText">
         <a
