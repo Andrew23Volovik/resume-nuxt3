@@ -1,11 +1,32 @@
 <script setup lang="ts">
-import type { Ref } from 'vue';
-import { ref } from '#imports';
+import type { AsyncComponentLoader, Raw, Ref } from 'vue';
+import { defineAsyncComponent, ref, markRaw, watch, useRoute } from '#imports';
 
 const dataSlides: string[] = ['ThePromo', 'TheProfile', 'TheSkills', 'TheExperience', 'TheThanks'];
 
-const slides: Ref<string[]> = ref([]);
+const createLazyComponent = (name: string): Raw<AsyncComponentLoader> => {
+  return markRaw(defineAsyncComponent(() => import('~' + `/components/slides/${name}.vue`)));
+};
+
+const slides: Ref<string[] | NonNullable<unknown>[]> = ref([]);
 slides.value = dataSlides.map(() => 'div');
+
+const route = useRoute();
+const currPage = computed(() => route.query.page);
+
+const addSLide = (slideIndex: number): void => {
+  if (typeof slides.value[Number(slideIndex)] === 'string') {
+    slides.value[Number(slideIndex)] = createLazyComponent(dataSlides[Number(slideIndex)]);
+  }
+};
+
+watch(
+  currPage,
+  (newPage) => {
+    addSLide(Number(newPage) - 1);
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
