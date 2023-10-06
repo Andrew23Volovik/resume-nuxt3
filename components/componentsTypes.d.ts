@@ -29,3 +29,11 @@ export interface IArrayOfIcons {
   component: Component;
   name: string;
 }
+
+export interface IExperienceLayoutProps {
+  title: string;
+  date: string;
+  descr: string;
+  responsibility: string;
+  technologies: string[];
+}

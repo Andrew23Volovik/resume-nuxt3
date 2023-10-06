@@ -108,22 +108,13 @@ const experiences = [
         hover-box-shadow="none"
         style="justify-content: flex-start"
       >
-        <div style="display: flex; flex-direction: column; gap: 1rem">
-          <div style="display: flex; justify-content: space-between">
-            <h4>{{ work.title }}</h4>
-            <span>{{ work.date }}</span>
-          </div>
-          <p>{{ work.descr }}</p>
-          <p>{{ work.responsibility }}</p>
-          <ul style="display: flex; list-style-type: none; flex-wrap: wrap">
-            <li
-              v-for="technology in work.technologies"
-              :key="technology"
-            >
-              {{ technology }}
-            </li>
-          </ul>
-        </div>
+        <UITheExperienceLayout
+          :title="work.title"
+          :date="work.date"
+          :descr="work.descr"
+          :responsibility="work.responsibility"
+          :technologies="work.technologies"
+        />
       </UITheCard>
     </div>
   </UITheCard>
