@@ -14,5 +14,11 @@ export default defineNuxtConfig({
       },
     },
   },
+  runtimeConfig: {
+    elasticHost: process.env.ELASTIC_HOST,
+    elasticAppPassword: process.env.ELASTIC_APP_PASSWORD,
+    elasticPort: process.env.ELASTIC_PORT,
+    elasticUserName: process.env.ELASTIC_USER_NAME,
+  },
   modules: ['@nuxt/devtools', '@nuxtjs/eslint-module', '@vueuse/motion/nuxt'],
 });

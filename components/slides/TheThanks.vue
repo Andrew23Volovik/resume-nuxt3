@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { ComputedRef } from 'vue';
+import type { ComputedRef, Ref } from 'vue';
+import type { ISender, JSONResponse } from '~/server/types/types';
 import { ref, reactive, computed } from '#imports';
 import { checkUserEmail, checkUserName } from '~/utils/formValidators';
 
@@ -53,7 +54,30 @@ const validationMessage = (): void => {
   }
 };
 const submitForm = async (): Promise<void> => {
-  // make request
+  try {
+    const bodyUpload: ISender = {
+      name: userName.value,
+      email: userEmail.value,
+      message: userMessage.value,
+    };
+
+    const { data: response } = await useFetch<JSONResponse>('/api/mail', {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      body: bodyUpload,
+    });
+
+    if (response.value) {
+      isVisible.value = false;
+    }
+  } catch (err) {
+    if (err instanceof Error) {
+      throw showError({
+        statusMessage: '404 Page not found.',
+        statusCode: 404,
+      });
+    }
+  }
 };
 
 const clearForm = (): void => {
