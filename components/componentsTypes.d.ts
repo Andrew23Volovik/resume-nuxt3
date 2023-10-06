@@ -37,3 +37,12 @@ export interface IExperienceLayoutProps {
   responsibility: string;
   technologies: string[];
 }
+
+export interface IInputProps {
+  label: string;
+  errorMsg?: string;
+  hintMsg?: string;
+  type: string;
+  value?: string;
+  modelValue: string;
+}

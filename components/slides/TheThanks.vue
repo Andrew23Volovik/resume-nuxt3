@@ -1,4 +1,71 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { ComputedRef } from 'vue';
+import { ref, reactive, computed } from '#imports';
+import { checkUserEmail, checkUserName } from '~/utils/formValidators';
+
+defineProps<{
+  dataIdx: number;
+}>();
+
+const isVisible: Ref<boolean> = ref(false);
+
+const userName: Ref<string> = ref('');
+const userEmail: Ref<string> = ref('');
+const userMessage: Ref<string> = ref('');
+
+const validationErrors = reactive<{
+  errName: string;
+  errEmail: string;
+  errMessage: string;
+}>({
+  errName: '',
+  errEmail: '',
+  errMessage: '',
+});
+
+const disabledButton: ComputedRef<boolean> = computed(() => {
+  if (
+    userName.value !== '' &&
+    userEmail.value !== '' &&
+    userMessage.value !== '' &&
+    validationErrors.errName === '' &&
+    validationErrors.errEmail === '' &&
+    validationErrors.errMessage === ''
+  ) {
+    return false;
+  } else {
+    return true;
+  }
+});
+
+const validationName = (): void => {
+  validationErrors.errName = checkUserName(userName.value);
+};
+const validationEmail = (): void => {
+  validationErrors.errEmail = checkUserEmail(userEmail.value);
+};
+
+const validationMessage = (): void => {
+  if (userMessage.value === '') {
+    validationErrors.errMessage = 'Message must not be empty';
+  } else {
+    validationErrors.errMessage = '';
+  }
+};
+const submitForm = async (): Promise<void> => {
+  // make request
+};
+
+const clearForm = (): void => {
+  userName.value = '';
+  userEmail.value = '';
+  userMessage.value = '';
+
+  validationErrors.errName = '';
+  validationErrors.errEmail = '';
+  validationErrors.errMessage = '';
+};
+</script>
 
 <template>
   <UITheCard
@@ -16,6 +83,53 @@
       <UITheButton @click="isVisible = true">Contact</UITheButton>
     </div>
   </UITheCard>
+  <Teleport to="body">
+    <LazyUITheModal
+      v-if="isVisible"
+      v-model="isVisible"
+      v-motion-pop
+      @on-unmounted="clearForm"
+    >
+      <template #header>Contact form</template>
+      <template #main>
+        <form
+          id="submitForm"
+          style="display: flex; flex-direction: column; gap: 2rem"
+        >
+          <UITheInput
+            v-model="userName"
+            label="Name"
+            type="text"
+            :error-msg="validationErrors.errName"
+            @input="validationName"
+          />
+          <UITheInput
+            v-model="userEmail"
+            label="Email"
+            type="email"
+            :error-msg="validationErrors.errEmail"
+            @input="validationEmail"
+          />
+          <UITheTextarea
+            v-model="userMessage"
+            label="Your message"
+            :error-msg="validationErrors.errMessage"
+            @input="validationMessage"
+          />
+        </form>
+      </template>
+      <template #footer>
+        <UITheButton
+          for="submitForm"
+          :disabled="disabledButton"
+          @click="submitForm"
+        >
+          Send
+        </UITheButton>
+        <UITheButton @click="isVisible = false"> Close </UITheButton>
+      </template>
+    </LazyUITheModal>
+  </Teleport>
 </template>
 
 <style scoped lang="scss">
