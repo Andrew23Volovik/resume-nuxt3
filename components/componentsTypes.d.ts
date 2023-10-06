@@ -1,3 +1,4 @@
+import { Component, ConcreteComponent } from "vue";
 export interface ITooltipProps {
   text: string;
   position?: string;
@@ -22,4 +23,9 @@ export interface ICardStyle extends IMotionAnimation {
   background?: string;
   hoverBackground?: string;
   hoverBoxShadow?: string;
+}
+
+export interface IArrayOfIcons {
+  component: Component;
+  name: string;
 }
