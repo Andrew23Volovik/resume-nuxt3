@@ -3,6 +3,20 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
     baseURL: '/',
+    head: {
+      title: 'Resume',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'author', content: 'Andrey Volovik' },
+        {
+          name: 'description',
+          content:
+            'Welcome to Andrey Volovik online resume. Explore my qualifications, skills, and professional experience. ' +
+            "Learn how I can contribute to your organization's success.",
+        },
+      ],
+      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }],
+    },
   },
   css: ['@/assets/styles/main.scss'],
   vite: {

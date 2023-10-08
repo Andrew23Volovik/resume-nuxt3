@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { JSONResponse } from '~/server/types/types';
+import type { Experiences } from '~/db/schema/experience';
 import { useBreakpoints } from '#imports';
 
 defineProps<{
@@ -7,84 +9,21 @@ defineProps<{
 
 const { screenType } = useBreakpoints();
 
-const experiences = [
-  {
-    id: 1,
-    title: 'Convo-itc',
-    date: '07/2021 to 12/2021',
-    descr:
-      'Junior front-end developer of a service for people with disabilities. The core functionality of the application enables deaf individuals to engage in real-time communication with others through the use of a translator.',
-    responsibility:
-      'Developing service functionality, implementing accessibility features to make the application usable for individuals with disabilities, and also investigating and developing a Chrome extension for this service.',
-    technologies: [
-      'VueJs',
-      'Vuex',
-      'VueRouter',
-      'Vue Class Component',
-      'ElementUI',
-      'DayJS',
-      'Vue Smart Widget',
-      'Vuelidate',
-    ],
-    timestamp: '2023-09-26 21:16:38',
-  },
-  {
-    id: 2,
-    title: 'Echomarkets',
-    date: '01/2022 to 07/2022',
-    descr:
-      'Junior front-end developer for a marketplace that offers real-time stock performance tracking, market trend updates, and portfolio management. Also provides cryptocurrency tracking for staying current in the digital asset landscape.',
-    responsibility:
-      'Design and development marketplace functionality. Updating and improving legacy website templates already on the marketplace. Refactoring online payment system from legacy code.',
-    technologies: ['VueJs', 'Vuex', 'VueRouter', 'VeeValidate', 'VueBootstrap', 'Vue Chart JS', 'Vue Apex Charts'],
-    timestamp: '2023-09-26 21:18:19',
-  },
-  {
-    id: 3,
-    title: 'Panda',
-    date: '07/2022 to 02/2023',
-    descr:
-      'Junior+ front-end developer for an online store specializing in furniture and home goods. The goal of the application is to create an attractive and user-friendly shopping experience for customers.',
-    responsibility:
-      'I refactored the code to enhance readability, maintainability, and performance. Additionally, I worked on implementing user interface improvements and resolving layout and design issues across various devices.',
-    technologies: [
-      'VueJs',
-      'Vuex',
-      'VueRouter',
-      'Vuelidate',
-      'Vuetify',
-      'Video Js',
-      'i18n',
-      'Lodash',
-      'Vue Test Utils',
-    ],
-    timestamp: '2023-09-26 21:20:42',
-  },
-  {
-    id: 4,
-    title: 'Carbidder',
-    date: '02/2023 to 09/2023',
-    descr:
-      'Middle front-end development of a car auction website. The purpose of the car auction app is to offer a convenient and potentially cost-effective way to buy and sell vehicles.',
-    responsibility:
-      'Optimized web application for performance, considering factors like page load time, rendering efficiency, and responsive design across various devices and browsers. Transferring the project to a new UI framework version.',
-    technologies: [
-      'TypeScript',
-      'NuxtJs',
-      'Pinia',
-      'VeeValidate',
-      'Vuetify',
-      'Apex Charts',
-      'nuxt/i18n',
-      'Lodash',
-      'Node.js',
-    ],
-    timestamp: '2023-09-26 21:21:49',
-  },
-];
+const experiences: Ref<Experiences[]> = ref([]);
+const { data, pending } = await useLazyFetch<JSONResponse>('/api/experience', {
+  server: false,
+  pick: ['data'],
+});
+
+watch(data, (newData: JSONResponse | null) => {
+  if (newData) {
+    experiences.value = newData.data.experiences;
+  }
+});
 </script>
 
 <template>
+  <UITheLoadingProgress v-if="pending" />
   <UITheCard
     style="flex-direction: column; gap: 1rem"
     animation
