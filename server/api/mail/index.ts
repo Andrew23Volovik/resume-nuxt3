@@ -6,7 +6,6 @@ import { JSONResponse } from '~/server/types/types';
 export default defineEventHandler(async (event: H3Event<EventHandlerRequest>): Promise<JSONResponse> => {
   const response = {} as JSONResponse;
   const validationError = await validateSender(event);
-  console.log(validationError);
 
   if (validationError instanceof H3Error) {
     response.status = 'fail';

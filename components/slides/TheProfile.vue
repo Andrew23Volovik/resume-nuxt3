@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { useBreakpoints } from '#imports';
+import type { Ref } from 'vue';
+import type { JSONResponse } from '~/server/types/types';
+import type { AdditionalDataReturn, Paragraph } from '~/db/schema/profile';
+import { useBreakpoints, ref, useLazyFetch, watch } from '#imports';
 
 defineProps<{
   dataIdx: number;
@@ -7,26 +10,23 @@ defineProps<{
 
 const { screenType } = useBreakpoints();
 
-const paragraphs = [
-  `I am an experienced and qualified IT specialist with over two years of work experience in the field of web
-  development. Each new project presents me with an opportunity to explore and update my knowledge about the
-  latest trends and technologies in the industry. This drives me toward continuous skill improvement, methodologies,
-  and approaches, as well as the search for solutions to complex tasks.`,
-  `I am convinced that a successful web application is a skillful blend of aesthetics and functionality, and I strive
-  to achieve this balance in every project. My goal is to expand the horizons of possibilities, and I am excited to
-  continue my journey in creating innovative web solutions. My successful experience in collaborating with teams and
-  completing projects confirms my ability to work effectively.`,
-];
+const paragraphs: Ref<Paragraph[]> = ref([]);
+const additionalData: Ref<AdditionalDataReturn | undefined> = ref();
+const { data, pending } = await useLazyFetch<JSONResponse>(`/api/profile`, {
+  server: false,
+  pick: ['data'],
+});
 
-const additionalData = {
-  Experience: '2+',
-  Education: 'ZNU Software engineer',
-  English: 'Intermediate',
-  Ukrainian: 'Native',
-};
+watch(data, (newData: JSONResponse | null) => {
+  if (newData) {
+    paragraphs.value = newData.data.paragraphs;
+    additionalData.value = newData.data.additionalData;
+  }
+});
 </script>
 
 <template>
+  <UITheLoadingProgress v-if="pending" />
   <UITheCard
     animation
     class="profile"
@@ -36,9 +36,9 @@ const additionalData = {
         <h2 class="accent-color"><span>&lt;PROFILE /&gt;</span></h2>
         <p
           v-for="paragraph in paragraphs"
-          :key="paragraph"
+          :key="paragraph.id"
         >
-          {{ paragraph }}
+          {{ paragraph.paragraph }}
         </p>
         <ul class="profile__ul">
           <li
