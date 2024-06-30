@@ -2,6 +2,7 @@
 import type { JSONResponse } from '~/server/types/types';
 import type { Experiences } from '~/db/schema/experience';
 import { useBreakpoints } from '#imports';
+import { ExperienceWithTechnologies } from '~/components/componentsTypes';
 
 defineProps<{
   dataIdx: number;
@@ -9,7 +10,7 @@ defineProps<{
 
 const { screenType } = useBreakpoints();
 
-const experiences: Ref<Experiences[]> = ref([]);
+const experiences: Ref<ExperienceWithTechnologies<Experiences>[]> = ref([]);
 const { data, pending } = await useLazyFetch<JSONResponse>('/api/experience', {
   server: false,
   pick: ['data'],
@@ -48,9 +49,10 @@ watch(data, (newData: JSONResponse | null) => {
         style="justify-content: flex-start"
       >
         <UITheExperienceLayout
+          :id="idx + 1"
           :title="work.title"
           :date="work.date"
-          :descr="work.descr"
+          :descr="work.description"
           :responsibility="work.responsibility"
           :technologies="work.technologies"
         />
@@ -70,7 +72,7 @@ h2 {
 
 .experience-wrapper {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(32rem, 1fr));
   gap: 1rem;
 }
 

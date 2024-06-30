@@ -1,14 +1,26 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
+import { pgTable, serial, timestamp, varchar, text, integer } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
 
-export const experiences = sqliteTable('experiences', {
-  id: integer('id').primaryKey(),
-  title: text('title').notNull(),
-  date: text('date').notNull(),
-  descr: text('descr').notNull(),
+export const experiences = pgTable('experiences', {
+  id: serial('id').primaryKey(),
+  created_at: timestamp('created_at', { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`),
+  updated_at: timestamp('updated_at', { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`),
+  title: varchar('title', { length: 30 }).notNull().unique(),
+  date: varchar('date', { length: 20 }).notNull(),
+  description: text('description').notNull(),
   responsibility: text('responsibility').notNull(),
-  technologies: text('technologies', { mode: 'json' }).$type<string[]>().notNull(),
 });
 
-export type Experiences = InferSelectModel<typeof experiences>;
-export type InsertExperiences = InferInsertModel<typeof experiences>;
+export type Experiences = typeof experiences.$inferSelect;
+
+export const technologies = pgTable('technologies', {
+  id: serial('id').primaryKey(),
+  created_at: timestamp('created_at'),
+  updated_at: timestamp('updated_at'),
+  experience_id: integer('experience_id')
+    .notNull()
+    .references(() => experiences.id),
+  technology: varchar('technology', { length: 30 }).notNull(),
+});
+
+export type Technologies = typeof technologies.$inferSelect;

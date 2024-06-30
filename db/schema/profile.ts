@@ -1,23 +1,25 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
+import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
 
-export const paragraphs = sqliteTable('paragraphs', {
-  id: integer('id').primaryKey(),
+export const paragraphs = pgTable('paragraphs', {
+  id: serial('id').primaryKey(),
+  created_at: timestamp('created_at', { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`),
+  updated_at: timestamp('updated_at', { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`),
   paragraph: text('paragraph').notNull(),
 });
 
-export type Paragraph = InferSelectModel<typeof paragraphs>;
-export type InsertParagraph = InferInsertModel<typeof paragraphs>;
+export type Paragraphs = typeof paragraphs.$inferSelect;
 
-export const additionalData = sqliteTable('additionalData', {
-  id: integer('id').primaryKey(),
+export const additionalData = pgTable('additionalData', {
+  id: serial('id').primaryKey(),
+  created_at: timestamp('created_at', { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`),
+  updated_at: timestamp('updated_at', { withTimezone: true }).default(sql`CURRENT_TIMESTAMP`),
   Experience: text('experience').notNull(),
   Education: text('education').notNull(),
   English: text('english').notNull(),
   Ukrainian: text('ukrainian').notNull(),
 });
 
-export type AdditionalData = InferSelectModel<typeof additionalData>;
-export type InsertAdditionalData = InferInsertModel<typeof additionalData>;
+export type AdditionalData = typeof additionalData.$inferSelect;
 
-export type AdditionalDataReturn = Omit<AdditionalData, 'id'>;
+export type AdditionalDataReturn = Omit<AdditionalData, 'id' | 'created_at' | 'updated_at'>;

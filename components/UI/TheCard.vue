@@ -52,7 +52,7 @@ if (props.animation) {
   padding: v-bind('props.padding');
   width: v-bind('props.width');
   background: v-bind('props.background');
-  border-radius: 2rem;
+  border-radius: 1rem;
   transition: 0.7s all ease;
   border: v-bind('props.border');
   cursor: pointer;

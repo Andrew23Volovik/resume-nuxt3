@@ -36,6 +36,8 @@ const dataNameIcons: string[] = [
   'NodeJs',
   'Express',
   'ubuntu',
+  'PostgreSQL',
+  'Redis',
 ];
 
 const arrOfIcons: Ref<IArrayOfIcons[]> = ref([]);
@@ -99,7 +101,7 @@ setTimeout(() => clearInterval(intervalId), dataNameIcons.length * delay);
 .skills {
   &__wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
     gap: 1rem;
     &-mobile {
       display: flex;
@@ -131,15 +133,15 @@ setTimeout(() => clearInterval(intervalId), dataNameIcons.length * delay);
     align-items: center;
     gap: 1rem;
     .icon {
-      width: 3rem;
-      height: 3rem;
+      width: 2.25rem;
+      height: 2.25rem;
     }
 
     span {
       color: $text-color;
-      font-size: 1.25rem;
-      line-height: 1.5rem;
-      font-weight: 500;
+      font-size: 1rem;
+      line-height: 1.25rem;
+      font-weight: 400;
       text-align: center;
     }
   }

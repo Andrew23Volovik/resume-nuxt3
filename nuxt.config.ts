@@ -34,8 +34,10 @@ export default defineNuxtConfig({
     elasticPort: process.env.ELASTIC_PORT,
     elasticUserName: process.env.ELASTIC_USER_NAME,
 
-    dataBaseURL: process.env.DATABASE_URL,
-    dataBaseAuth: process.env.DATABASE_AUTH_TOKEN,
+    pgHost: process.env.PGHOST,
+    pgDatabase: process.env.PGDATABASE,
+    pgUser: process.env.PGUSER,
+    pgPassword: process.env.PGPASSWORD,
   },
   modules: ['@nuxt/devtools', '@nuxtjs/eslint-module', '@vueuse/motion/nuxt'],
 });

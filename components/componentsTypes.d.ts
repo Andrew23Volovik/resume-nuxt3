@@ -46,3 +46,6 @@ export interface IInputProps {
   value?: string;
   modelValue: string;
 }
+
+export type ExperienceWithTechnologies<T> = Partial<T>
+  & { technologies: string[] }

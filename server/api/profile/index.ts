@@ -1,12 +1,12 @@
 import { H3Error } from 'h3';
-import { additionalData, AdditionalDataReturn, Paragraph, paragraphs } from '~/db/schema/profile';
-import { db } from '~/server/turso.service';
+import { additionalData, AdditionalDataReturn, Paragraphs, paragraphs } from '~/db/schema/profile';
+import { db } from '~/server/neon.service';
 import { JSONResponse, ProfileResponse } from '~/server/types/types';
 
 export default defineEventHandler(async (): Promise<JSONResponse | H3Error | undefined> => {
   const response = {} as JSONResponse;
   try {
-    const paragraphsRes: Paragraph[] = await db.select().from(paragraphs).all();
+    const paragraphsRes: Paragraphs[] = await db.select().from(paragraphs);
     const additionalDataRes: AdditionalDataReturn[] = await db
       .select({
         Experience: additionalData.Experience,
@@ -14,8 +14,7 @@ export default defineEventHandler(async (): Promise<JSONResponse | H3Error | und
         English: additionalData.English,
         Ukrainian: additionalData.Ukrainian,
       })
-      .from(additionalData)
-      .all();
+      .from(additionalData);
 
     response.status = 'success';
     response.data = {

@@ -5,7 +5,10 @@ defineProps<IExperienceLayoutProps>();
 </script>
 
 <template>
-  <div class="experience">
+  <div
+    v-if="title"
+    class="experience"
+  >
     <div class="experience__title">
       <h3 class="accent-color">{{ title }}</h3>
       <span>{{ date }}</span>
@@ -26,6 +29,12 @@ defineProps<IExperienceLayoutProps>();
         {{ technology }}
       </UITheChip>
     </div>
+  </div>
+  <div
+    v-else
+    style="display: flex; margin: 0 auto; align-items: center"
+  >
+    <h2 class="accent-color">SOON</h2>
   </div>
 </template>
 

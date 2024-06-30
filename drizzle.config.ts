@@ -1,12 +1,19 @@
 import { Config } from 'drizzle-kit';
+import 'dotenv/config';
 
+const { PGHOST, PGUSER, PGDATABASE, PGPASSWORD } = process.env;
+if (!PGPASSWORD && !PGUSER && !PGDATABASE && !PGPASSWORD) {
+  throw new Error('Missing environment variables');
+}
 export default {
   schema: './db/schema/*.ts',
   out: './db/migrations',
-  driver: 'turso',
+  dialect: 'postgresql',
   dbCredentials: {
-    url: 'libsql://resume-andrew23volovik.turso.io',
-    authToken:
-      'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIyMDIzLTEwLTAyVDEwOjIyOjI5Ljc4NTIyNTkxNVoiLCJpZCI6IjkwYjVmYWQzLTYxMGQtMTFlZS05OTAzLWJhZmU2NjdjODUwOCJ9.ZSu8lqms8LgTu5wJvii0IhB_ZvXXilmyo8UogBPiD1GuHseuyAi2cPkKtzCVjq4xWtUHaSCJZu7FXtuH8wpaBQ',
+    host: PGHOST as string,
+    user: PGUSER,
+    password: PGPASSWORD,
+    database: PGDATABASE as string,
+    ssl: true,
   },
 } satisfies Config;

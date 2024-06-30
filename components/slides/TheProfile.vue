@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Ref } from 'vue';
 import type { JSONResponse } from '~/server/types/types';
-import type { AdditionalDataReturn, Paragraph } from '~/db/schema/profile';
+import type { AdditionalDataReturn, Paragraphs } from '~/db/schema/profile';
 import { useBreakpoints, ref, useLazyFetch, watch } from '#imports';
 
 defineProps<{
@@ -10,7 +10,7 @@ defineProps<{
 
 const { screenType } = useBreakpoints();
 
-const paragraphs: Ref<Paragraph[]> = ref([]);
+const paragraphs: Ref<Paragraphs[]> = ref([]);
 const additionalData: Ref<AdditionalDataReturn | undefined> = ref();
 const { data, pending } = await useLazyFetch<JSONResponse>(`/api/profile`, {
   server: false,
@@ -79,7 +79,7 @@ watch(data, (newData: JSONResponse | null) => {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 1.5rem;
+      border-radius: 1rem;
       box-shadow: 0.25rem 0.25rem 1rem 0.25rem rgba(#1a1a1a, 20%);
     }
   }
@@ -89,8 +89,8 @@ watch(data, (newData: JSONResponse | null) => {
     gap: 1.25rem;
     p {
       color: $text-color;
-      font-size: 1.25rem;
-      line-height: 1.75rem;
+      font-size: 1rem;
+      line-height: 1.25rem;
       font-weight: 300;
       text-align: justify;
       text-justify: inter-word;
@@ -110,14 +110,14 @@ watch(data, (newData: JSONResponse | null) => {
       display: flex;
       flex-direction: column;
       h2 > span {
-        font-size: 1.75rem;
-        line-height: 2rem;
+        font-size: 1.5rem;
+        line-height: 1.75rem;
       }
     }
     li > span {
       color: rgba($text-color, 50%);
-      font-size: 1.25rem;
-      line-height: 1.5rem;
+      font-size: 1rem;
+      line-height: 1.25rem;
       font-weight: 300;
     }
   }
